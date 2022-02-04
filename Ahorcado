@@ -1,0 +1,100 @@
+def ahorcado():
+  print("_____________________________________________________")
+  print("\/\/\/\/\/\/\/\/\/\/\¡Ahorcado!\/\/\/\/\/\/\/\/\/\/\/\n")
+  print("Adivina la palabra antes de quedar ahorcado, tienes 6\noportunidades para adivinar.\nPista: Las palabras se relacionan a la programacion,\ntodas las letras estan en mayuscula.\n")
+  print("                      ¡Suerte!")
+  print("_____________________________________________________")
+
+  nombre0=(input("Ingresa tu nombre: \n"))
+
+  import random
+  import os
+
+  palabras=["PYTHON","CODIGO","PROGRAMA","LOGICA","FUNCION","CICLO","DATOS","TEXTO","CORRER","LISTA"] #PENSAR PALABRAS (idea: pueden ser relacionadas a programacion)
+  
+  palabra_escojida=list(random.choice(palabras))
+
+  horca=["               !==========|",
+         "                          |",
+         "                          |",
+         "                          |",
+         "                          |",
+         "                          |",
+         "                          |",
+         "      ____________________|",]
+
+  ahorcado=["               !==========|",
+            "            \  0  /       |",
+            "             \ | /        |",
+            "               |          |",
+            "              / \         |",
+            "             /   \        |",
+            "            _\   /_       |",
+            "      ____________________|",]
+  
+  letras_dichas=[] 
+  fallas=1
+
+  resultado=[] 
+  for i in range(len(palabra_escojida)):
+    resultado.append("_")
+  
+  while True:
+    
+    os.system("cls")
+
+    for i in range(fallas): 
+      print(ahorcado[i])
+    for i in range(len(horca)-fallas): 
+      print(horca[i+fallas])
+    
+    print()
+   
+    print("         ", end=" ")
+    for i in resultado:
+      print(i, end=" ")
+    
+    print()
+    print()
+  
+    if (resultado==palabra_escojida):
+      print("      ¡Ganaste "+str(nombre0)+"!")
+      break
+    
+    if (fallas>6):
+      print("      Perdiste :c "+str(nombre0))
+      print("  La palabra era:", "".join(palabra_escojida))
+      break
+
+    while True:
+      letra_jugador=input("Ingresa una letra en mayuscula. Escribe 'salir' para salir : ")
+      
+      if letra_jugador == 'salir':
+        print("Juego terminado, gracias por jugar a este reto final ;)")
+      return
+
+    try:
+      letra_puesta=letra_jugador.upper()
+      
+    except:
+      if letra_puesta in letras_dichas:
+        print("Esa letra ya la dijiste")
+      elif letra_puesta not in "ABCDEFGHIJKMNÑLOPQRSTUVWXYZ":
+        print("Ingresa una letra")
+      elif len(letra_puesta) !=1:
+        print("Ingresa solo UNA letra")
+      else:
+        letras_dichas.append(letra_puesta)
+        break
+      
+    for i in range(len(palabra_escojida)):
+      if palabra_escojida[i]==letra_puesta:
+        resultado[i]=letra_puesta
+      
+    if letra_puesta not in palabra_escojida:
+      fallas+=1
+      
+    print()
+    print()
+  
+  ahorcado()
