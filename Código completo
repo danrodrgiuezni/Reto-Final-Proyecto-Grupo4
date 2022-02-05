@@ -1,0 +1,23 @@
+print("______________________________________________________________")
+print("/\/\/\/\/\/\/\/\/\/\/PROYECTO GRUPO 34\/\/\/\/\/\/\/\/\/\/\/\/")
+print("")
+print("Nuestro proyecto consiste en una combinación de dos juegos muy\nconocidos, hablamos del triqui y el ahorcado, los fusionamos de\ntal manera que se puedan jugar juntos o cada uno por separado.")
+print("")
+print("                       ¡Diviertete!           ")
+print("______________________________________________________________")
+print("")
+
+juego=0
+#Elige
+def eleccion():
+  print("Opciones:\n 1)Triqui ahorcado\n 2)Triqui\n 3)Ahorcado\n")
+  eleccion= float(input("¿Que deseas jugar? Elije una de las 3 opciones: "))
+  if eleccion==1:
+    triquiahorcado()
+  elif eleccion==2:
+    triqui()
+  elif eleccion==3:
+    juego=3
+    ahorcado()
+  else:
+    print("Esa no es una opcion, por favor elije de nuevo.")
