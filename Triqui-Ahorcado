@@ -1,0 +1,130 @@
+def triqui2():
+  
+    nombre1=(input("Jugador 1, ingresa tu nombre: \n"))
+    nombre2=(input("Jugador 2, ingresa tu nombre: \n"))
+    
+    while True:
+      xoo=(input("¿Jugador 2, quieres ser X o O?: \n" ))
+    
+      if xoo=="X":
+        print(str(nombre2)+ " eres X, inicias.")
+        break
+      elif xoo=="O":
+        print("Eres O, inicia "+str(nombre1)+" que es X.")
+        break
+      else:
+        print("Por favor selecciona una opción valida")
+    juego2()
+  			 
+from collections import deque
+turno = deque(["0", "X"])
+tablero = [
+		[" ", " ", " "],
+		[" ", " ", " "],
+		[" ", " ", " "],
+	]
+
+def ver_tablero():
+	 print("")
+	 for fila in tablero:		
+			print (fila)
+
+def actualizar_tablero(posicion, jugador):
+	 tablero[posicion[0]][posicion[1]] = jugador
+
+def siguiente_turno():
+	 turno.rotate()
+	 return turno[0]
+
+def proceso_posicion(posicion):
+	 fila, columna = posicion.split(",")
+	 return [int(fila)-1, int(columna)-1]
+
+def posicion_valida(posicion):
+	 if 0 <= posicion[0] <= 2 and 0 <= posicion[1] <= 2:
+		 if tablero[posicion[0]][posicion[1]] == " ":
+				return True
+	 return False
+
+def ha_ganado(j):
+		#compara las filas del tablero
+		if tablero[0] == [j,j,j] or tablero[1] == [j,j,j] or tablero[2] == [j,j,j]:
+			return True
+		#compara las columnas
+		elif tablero[0][0] == j and tablero[1][0] == j and tablero[2][0] == j:
+			return True
+		elif tablero[0][1] == j and tablero[1][1] == j and tablero[2][1] == j:
+			return True
+		elif tablero[0][2] == j and tablero[1][2] == j and tablero[2][2] == j:
+			return True
+		#compara las diagonales
+		elif tablero[0][0] == j and tablero[1][1] == j and tablero[2][2] == j:
+			return True
+		elif tablero[0][2] == j and tablero[1][1] == j and tablero[2][0] == j:
+			return True
+		return False
+
+def juego2():
+	import os
+	ver_tablero()
+	jugador = siguiente_turno()
+	while True:
+			os.system("cls")
+			posicion = input("Turno de {}, elige una posicion (fila, columna) o escribe 'salir' para salir ".format(jugador))
+			if posicion == 'salir':
+				print ("Juego terminado, gracias por jugar a este reto final ;)")
+				break
+			try:
+				posicion_l = proceso_posicion (posicion)			
+			except:
+				print ("Error, posicion {} inválida. ".format(posicion))
+				continue
+			if posicion_valida(posicion_l):
+				actualizar_tablero(posicion_l, jugador)
+				ver_tablero()
+				if ha_ganado(jugador):
+					print ("El jugador {} ha ganado!!! gracias por jugar a este reto final ;)".format(jugador))
+					break
+				jugador = siguiente_turno()
+			else:
+				print ("Posicion {} Inválida".format(posicion))
+triqui2()
+		
+
+y=int(input("¿Cuantos juegos de triqui desean jugar? \nRecuerda, debe ser un número impar: \n"))
+
+def triquiahorcado():
+  print("______________________________________________________________")
+  print("\/\/\/\/\/\/\/\/\/\/ EL TRIQUI AHORCADO \/\/\/\/\/\/\/\/\/\/\/")
+  print("")
+  print("El juego consiste en jugar triqui el numero impar de veces que\nse desee, puede ser contra la maquina o contra un amigo, si\njuegas solo y derrotas la mayoría de veces a la maquina puedes\npasar al reto de ahorcado, si juegas con un amigo el ganador de\nla mayoria de juegos de triqui puede pasar al reto del ahorcado.\nEn el ahorcado hay 10 posibles palabras de entre 5 y 7 letras\nrelacionadas a la programación para adivinar.")
+  print("")
+  print("                       ¡Diviertete!           ")
+  print("______________________________________________________________")
+  print("")
+  
+  x=float(input("¿Cuantos jugadores?: \n"))
+
+  if x==1:
+    nombre0=(input("Juegas contra la maquina, ingresa tu nombre: \n"))
+    while True:
+      xoo=(input("¿Quieres ser X o O?: \n" ))
+    
+      if xoo=="X":
+        print(str(nombre0)+ " eres X, inicias.")
+        break
+      elif xoo=="O":
+        print(str(nombre0)+ ", inicia la maquina.")
+        break
+      else:
+        print("Por favor selecciona una opción valida")
+        
+
+  elif x==2:
+    triqui2()
+	 
+  else:
+      print("¡No se puede jugar así!")
+
+for i in range(y):
+  triquiahorcado()
