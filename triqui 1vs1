@@ -1,5 +1,4 @@
 from collections import deque
-
 turno = deque(["0", "X"])
 tablero = [
 	[" ", " ", " "],
