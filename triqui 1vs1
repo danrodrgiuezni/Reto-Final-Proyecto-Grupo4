@@ -1,0 +1,69 @@
+from collections import deque
+
+turno = deque(["0", "X"])
+tablero = [
+	[" ", " ", " "],
+	[" ", " ", " "],
+	[" ", " ", " "],
+]
+def ver_tablero():
+	print("")
+	for fila in tablero:		
+		print (fila)
+
+def actualizar_tablero(posicion, jugador):
+	tablero[posicion[0]][posicion[1]] = jugador
+
+def siguiente_turno():
+	turno.rotate()
+	return turno[0]
+def proceso_posicion(posicion):
+	fila, columna = posicion.split(",")
+	return [int(fila)-1, int(columna)-1]
+
+def posicion_valida(posicion):
+	if 0 <= posicion[0] <= 2 and 0 <= posicion[1] <= 2:
+		if tablero[posicion[0]][posicion[1]] == " ":
+			return True
+	return False
+def ha_ganado(j):
+	#compara las filas del tablero
+	if tablero[0] == [j,j,j] or tablero[1] == [j,j,j] or tablero[2] == [j,j,j]:
+		return True
+	#compara las columnas
+	elif tablero[0][0] == j and tablero[1][0] == j and tablero[2][0] == j:
+		return True
+	elif tablero[0][1] == j and tablero[1][1] == j and tablero[2][1] == j:
+		return True
+	elif tablero[0][2] == j and tablero[1][2] == j and tablero[2][2] == j:
+		return True
+	#compara las diagonales
+	elif tablero[0][0] == j and tablero[1][1] == j and tablero[2][2] == j:
+		return True
+	elif tablero[0][2] == j and tablero[1][1] == j and tablero[2][0] == j:
+		return True
+	return False
+def juego():
+	ver_tablero()
+	jugador = siguiente_turno()
+	while True:
+		posicion = input("Turno de {}, elige una posicion (fila, columna). 'Escribe salir' para salir".format(jugador))
+		if posicion == 'salir':
+			print ("Juego terminado")
+			break
+		try:
+			posicion_l = proceso_posicion (posicion)			
+		except:
+			print ("Error, posicion {} inválida. ".format(posicion))
+			continue
+		if posicion_valida(posicion_l):
+			actualizar_tablero(posicion_l, jugador)
+			ver_tablero()
+			if ha_ganado(jugador):
+				print ("El jugador {} ha ganado!!!".format(jugador))
+				break
+			jugador = siguiente_turno()
+		else:
+			print ("Posicion {} Inválida".format(posicion))
+	
+juego()
