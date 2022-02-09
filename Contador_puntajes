@@ -1,0 +1,31 @@
+import random
+import json
+
+def game():
+    puntaje = random.randint(1, 30) #definir el puntaje min y max 
+    return puntaje
+#Aqui se ejecuta el juego de triqui
+
+
+print ("BIENVENIDO AL JUEGO")
+SCORE = game()
+
+#Acaba el juego, se retorna un valor de puntaje
+nombre = input("Por favor ingresa un alias: ")
+
+#Bajamos el archivo JSON en un diccionario
+f = open("PLAYERS.json", "r")
+Resumen = json.load(f)
+Resumen[nombre] = SCORE
+
+#Subimos a JSON el nuevo diccionario con las adiciones
+f = open ("PLAYERS.json", "w")
+json.dump(Resumen, f)
+
+#Ordena y muestra a los jugadores y sus puntajes
+sort_sumary = sorted(Resumen.items(), key=lambda x: x[1],reverse=True)
+contador = 0 
+for i in sort_sumary:
+    if contador < 3:
+        print ( f"{i[0]} obtuvo un puntaje de {i[1]}") 
+        contador += 1
