@@ -1,0 +1,737 @@
+#Codigo completo proyecto  
+
+print("______________________________________________________________")
+print("\/\/\/\/\/\/\/\/\/\/\/PROYECTO GRUPO 4\/\/\/\/\/\/\/\/\/\/\/\/")
+print("")
+print("Nuestro proyecto consiste en una combinación de dos juegos muy\nconocidos, hablamos del triqui y el ahorcado, los fusionamos de\ntal manera que se puedan jugar juntos o cada uno por separado.")
+print("")
+print("                       ¡Diviertete!           ")
+print("______________________________________________________________")
+print("")
+
+#Elige
+def eleccion():
+  print("Opciones:\n 1)Triqui ahorcado\n 2)Triqui\n 3)Ahorcado\n")
+  while True:
+    eleccion= float(input("¿Que deseas jugar? elige una de las 3 opciones: "))
+    if eleccion==1:
+      triquiahorcado()
+      break
+    elif eleccion==2:
+      triqui()
+      break
+    elif eleccion==3:
+      juego=3
+      ahorcado()
+      break
+    else:
+      print("Esa no es una opcion, por favor elige de nuevo.")
+
+
+# TRIQUI ################################################################################################################################################################################
+
+
+
+def triqui():
+  print("______________________________________________________________")
+  print("\/\/\/\/\/\/\/\/\/\/\/\/\/TRIQUI/\/\/\/\/\/\/\/\/\/\/\/\/\/\/")
+  print("")
+  print("¡El clasico juego de toda la vida!, consiste en marcar X u O en\nun tablero de 3x3, es decir 9 posiciones, cuando un jugador\ncompleta una fila, columna o diagonal del tablero gana y se\ntermina el juego, si ninguno lo logra es un empate.\n      Puedes jugar contra la maquina o contra un amigo.")
+  print("")
+  print("                       ¡Diviertete!           ")
+  print("______________________________________________________________")
+  print("")
+
+  x=float(input("¿Cuantos jugadores?: \n"))
+  
+
+
+  while True: 
+    if x==1: #Juega contra la maquina
+      triqui1()
+      import random
+      import json
+
+      def game():#Contador de puntos
+        puntaje = random.randint(1, 30)
+        return puntaje
+
+
+      print ("BIENVENIDO AL JUEGO")
+      SCORE = game()
+      nombre = input("Por favor ingresa un alias: ")
+
+      f = open("PLAYERS.json", "r")
+      Resumen = json.load(f)
+      Resumen[nombre] = SCORE
+
+
+      f = open ("PLAYERS.json", "w")
+      json.dump(Resumen, f)
+      break
+
+    elif x==2:#Juegan dos personas
+      nombre1=(input("Jugador 1, ingresa tu nombre: \n"))
+      nombre2=(input("Jugador 2, ingresa tu nombre: \n"))
+
+      while True:
+        xoo=(input("¿Quieres ser X o O?: \n" ))
+        if xoo=="X":
+          print(str(nombre2)+ " eres X, inicias.")
+          break
+        elif xoo=="O":
+          print("Eres O, inicia "+str(nombre1)+" que es X.")
+          break
+        else:
+          print("Por favor selecciona una opción valida")
+          
+      triqui2()
+      import random
+      import json
+
+      def game():#Contador de puntos
+        puntaje = random.randint(1, 30) 
+        return puntaje
+
+
+      print ("BIENVENIDO AL JUEGO")
+      SCORE = game()
+      nombre = input("Por favor ingresa un alias: ")
+
+      f = open("PLAYERS.json", "r")
+      Resumen = json.load(f)
+      Resumen[nombre] = SCORE
+
+
+      f = open ("PLAYERS.json", "w")
+      json.dump(Resumen, f) 
+      break
+	 
+    else:
+        print("¡No se puede jugar así!")
+
+
+
+#Codigo triqui para 1 persona
+import random 
+def iniciar_tablero():
+  
+    tablero = [] 
+    for i in range(3):
+          tablero.append(["-","-","-"])
+    return tablero
+
+def random_jugador():
+    if random.randint(0,1) == 1 :
+        return "Jugador"
+    else :
+        return "Maquina"
+        
+def seleccionar_simbolo_jugador():
+  nombre0=(input("Juegas contra la maquina, ingresa tu nombre: \n"))
+
+  while True:
+    xoo=(input("¿Quieres ser X o O?: \n" ))
+    if xoo=="X":
+      print(str(nombre0)+ " eres X.")
+      break
+    elif xoo=="O":
+      print(str(nombre0)+ " eres O.")
+      break
+    else:
+      print("Por favor selecciona una opción valida")
+
+  if xoo == "X" or xoo == "x" :
+      return "X" , "O"
+  else:
+      return "O" , "X"
+
+def imprimir_tablero(tablero):
+    for i in tablero:
+        print(*i)
+        
+def se_puede_jugar(tablero):
+    for fila in tablero:
+        for columna in fila:
+            if columna == "-":
+                return True
+    return False
+
+            
+def hay_ganador(t , jugador , maquina):
+    ## filas completas    
+    if (t[0][0] == t[0][1] and t[0][1] == t[0][2] and t[0][0] != "-" ) or (t[1][0] == t[1][1] and t[1][1] == t[1][2] and t[1][0] != "-") or(t[2][0] == t[2][1] and t[2][1] == t[2][2] and t[2][0] != "-" ):
+        return True
+    ## columna completa    
+    elif (t[0][0] == t[1][0] and t[1][0] == t[2][0] and t[0][0] != "-" ) or (t[0][1] == t[1][1] and t[1][1] == t[2][1] and t[0][1] != "-" )  or (t[0][2] == t[1][2] and t[1][2] == t[2][2] and t[0][2] != "-" ):
+        return True
+    ## diagonales completas
+    elif (t[0][0] == t[1][1] and t[1][1] == t[2][2] and t[0][0] != "-" ) or (t[0][2] == t[1][1] and t[1][1] == t[2][0] and t[0][2] != "-" ) :
+        return True
+    else:
+        return False
+def ubicar(entrada , tablero , simbolo):
+    cont = 0 ; 
+    for i in range(3):
+        for j in range(3):
+            cont += 1;
+            if cont == entrada:
+                tablero[i][j] = simbolo
+
+    return tablero
+                
+        
+def jugar_turno_jugador(tablero , disponibles , simbolo):
+    valid = True
+    while valid:
+        print(*disponibles)
+        entrada = int(input("Ingresa el número de la casilla que deseas ocupar : "))
+        if entrada in disponibles:
+            valid = False
+            tablero = ubicar(entrada , tablero , simbolo)
+            disponibles.remove(entrada)
+        else:
+            print("No es posible, intenta de nuevo.")
+    return tablero , disponibles
+
+def jugar_turno_maquina(tablero , disponibles , simbolo ):
+    entrada = disponibles[random.randint(0, len(disponibles) -1 )]
+    tablero = ubicar(entrada , tablero , simbolo) 
+    disponibles.remove(entrada)
+
+    return tablero , disponibles
+
+    
+def triqui1():
+    tablero = iniciar_tablero()
+    disponibles =[1,2,3,4,5,6,7,8,9]
+    jugador_actual = random_jugador()
+    simbolo_jugador, simbolo_maquina = seleccionar_simbolo_jugador()
+    juego_activo = True
+    print("Inicia: " , jugador_actual) #METER EL NOMBRE
+    while juego_activo:
+        
+        if jugador_actual == "Jugador":
+            tablero , disponibles = jugar_turno_jugador(tablero , disponibles , simbolo_jugador)
+        else:
+            tablero , disponibles = jugar_turno_maquina(tablero , disponibles  , simbolo_maquina)
+            
+        if not se_puede_jugar(tablero):
+            juego_activo = False
+            print("No se pueden hacer más jugadas, es un... ¡Empate! ")
+            
+        elif hay_ganador(tablero , simbolo_maquina , simbolo_jugador):
+            print("El ganador es:", jugador_actual)
+            juego_activo = False
+        else:
+            if jugador_actual == "Jugador":
+                print("Se ocupa tu posicion sigue la Maquina." )
+                jugador_actual = "Maquina"
+            else:
+                jugador_actual = "Jugador"
+        imprimir_tablero(tablero)
+        if juego_activo: 
+            print()
+            print("-- CAMBIO DE TURNO --")
+            print()
+                
+
+
+#Codigo del triqui para dos personas 
+from collections import deque
+turno = deque(["0", "X"])
+tablero = [
+		[" ", " ", " "],
+		[" ", " ", " "],
+		[" ", " ", " "],
+	]
+
+def ver_tablero():
+	 print("")
+	 for fila in tablero:		
+			print (fila)
+
+def actualizar_tablero(posicion, jugador):
+	 tablero[posicion[0]][posicion[1]] = jugador
+
+def siguiente_turno():
+	 turno.rotate()
+	 return turno[0]
+
+def proceso_posicion(posicion):
+	 fila, columna = posicion.split(",")
+	 return [int(fila)-1, int(columna)-1]
+
+def posicion_valida(posicion):
+	 if 0 <= posicion[0] <= 2 and 0 <= posicion[1] <= 2:
+		 if tablero[posicion[0]][posicion[1]] == " ":
+				return True
+	 return False
+
+def ha_ganado(j):
+		#compara las filas del tablero
+		if tablero[0] == [j,j,j] or tablero[1] == [j,j,j] or tablero[2] == [j,j,j]:
+			return True
+		#compara las columnas
+		elif tablero[0][0] == j and tablero[1][0] == j and tablero[2][0] == j:
+			return True
+		elif tablero[0][1] == j and tablero[1][1] == j and tablero[2][1] == j:
+			return True
+		elif tablero[0][2] == j and tablero[1][2] == j and tablero[2][2] == j:
+			return True
+		#compara las diagonales
+		elif tablero[0][0] == j and tablero[1][1] == j and tablero[2][2] == j:
+			return True
+		elif tablero[0][2] == j and tablero[1][1] == j and tablero[2][0] == j:
+			return True
+		return False
+
+def triqui2():
+	import os
+	ver_tablero()
+	jugador = siguiente_turno()
+	while True:
+			os.system("cls")
+			posicion = input("Turno de {}, elige una posicion (fila, columna) o escribe 'salir' para salir ".format(jugador))
+			if posicion == 'salir':
+				print ("Juego terminado, gracias por jugar a este reto final ;)")
+				break
+			try:
+				posicion_l = proceso_posicion (posicion)			
+			except:
+				print ("Error, posicion {} inválida. ".format(posicion))
+				continue
+			if posicion_valida(posicion_l):
+				actualizar_tablero(posicion_l, jugador)
+				ver_tablero()
+				if ha_ganado(jugador):
+					print ("El jugador {} ha ganado!!! gracias por jugar a este reto final ;)".format(jugador))
+          
+					break
+				jugador = siguiente_turno()
+			else:
+				print ("Posicion {} Inválida".format(posicion))
+
+# Ahorcado ######################################################################################################################################################################################
+
+def ahorcado():
+  print("_____________________________________________________")
+  print("\/\/\/\/\/\/\/\/\/\/\¡Ahorcado!\/\/\/\/\/\/\/\/\/\/\/\n")
+  print("Adivina la palabra antes de quedar ahorcado, tienes 6\noportunidades para adivinar.\nPista: Las palabras se relacionan a la programacion,\ntodas las letras estan en mayuscula.\n")
+  print("                      ¡Suerte!")
+  print("_____________________________________________________")
+
+  nombre0=(input("Ingresa tu nombre: \n"))
+
+  import random
+  import os
+
+  palabras=["PYTHON","CODIGO","PROGRAMA","LOGICA","FUNCION","CICLO","DATOS","TEXTO","LISTA","JSON"]
+  
+  palabra_escojida=list(random.choice(palabras))
+
+  horca=["               !==========|",
+         "                          |",
+         "                          |",
+         "                          |",
+         "                          |",
+         "                          |",
+         "                          |",
+         "      ____________________|",]
+
+  ahorcado=["               !==========|",
+            "            \  0  /       |",
+            "             \ | /        |",
+            "               |          |",
+            "              / \         |",
+            "             /   \        |",
+            "            _\   /_       |",
+            "      ____________________|",]
+  
+  letras_dichas=[] 
+  fallas=1
+
+  resultado=[] 
+  for i in range(len(palabra_escojida)):
+    resultado.append("_")
+  
+  while True:
+    
+    os.system("cls")
+
+    for i in range(fallas): 
+      print(ahorcado[i])
+    for i in range(len(horca)-fallas): 
+      print(horca[i+fallas])
+    
+    print()
+   
+    print("         ", end=" ")
+    for i in resultado:
+      print(i, end=" ")
+    
+    print()
+    print()
+  
+    if (resultado==palabra_escojida):
+      print("      ¡Ganaste "+str(nombre0)+"!")
+      import random
+      import json
+
+      def game():#
+        puntaje = random.randint(1, 30) 
+        return puntaje
+
+
+      print ("BIENVENIDO AL JUEGO")
+      SCORE = game()
+      nombre = input("Por favor ingresa un alias: ")
+
+      f = open("PLAYERS.json", "r")
+      Resumen = json.load(f)
+      Resumen[nombre] = SCORE
+
+
+      f = open ("PLAYERS.json", "w")
+      json.dump(Resumen, f)
+      break
+    
+    if (fallas>6):
+      print("      Perdiste :c "+str(nombre0))
+      print("  La palabra era:", "".join(palabra_escojida))
+      break
+
+    while True:
+      letra_jugador=input("Ingresa una letra: ")
+      letra_puesta=letra_jugador.upper()
+
+      if letra_puesta in letras_dichas:
+        print("Esa letra ya la dijiste")
+      elif letra_puesta not in "ABCDEFGHIJKMNÑLOPQRSTUVWXYZ":
+        print("Ingresa una letra")
+      elif len(letra_puesta) !=1:
+        print("Ingresa solo UNA letra")
+      else:
+        letras_dichas.append(letra_puesta)
+        break
+      
+    for i in range(len(palabra_escojida)):
+      if palabra_escojida[i]==letra_puesta:
+        resultado[i]=letra_puesta
+      
+    if letra_puesta not in palabra_escojida:
+      fallas+=1
+      
+    print()
+    print()
+ 
+# TRIQUIAHORCADO ######################################################################################################################################################################################
+
+def triquiahorcado():
+
+  print("______________________________________________________________") 
+  print("\/\/\/\/\/\/\/\/\/\/ EL TRIQUI AHORCADO \/\/\/\/\/\/\/\/\/\/\/")
+  print("")
+  print("El juego consiste en jugar primero un partido de triqui, puede\nser contra la maquina o contra un amigo, si juegas solo y\nderrotas a la maquina puedes pasar al reto del ahorcado;\nsi juegas con un amigo el ganador del juego de triqui puede\npasar al reto del ahorcado.\nEn el ahorcado hay 10 posibles palabras de entre 5 y 7 letras\nrelacionadas a la programación para adivinar.")
+  print("")
+  print("                       ¡Diviertete!           ")
+  print("______________________________________________________________")
+  print("")
+
+  print("                    ¡INICIA EL TRIQUI!")
+  def triquiaho():
+    x=float(input("¿Cuantos jugadores?: \n"))
+    while True: 
+      if x==1:
+        triqui3()
+        break
+
+      elif x==2:
+        nombre1=(input("Jugador 1, ingresa tu nombre: \n"))
+        nombre2=(input("Jugador 2, ingresa tu nombre: \n"))
+
+        while True:
+          xoo=(input("¿Quieres ser X o O?: \n" ))
+          if xoo=="X":
+            print(str(nombre2)+ " eres X, inicias.")
+            break
+          elif xoo=="O":
+            print("Eres O, inicia "+str(nombre1)+" que es X.")
+            break
+          else:
+            print("Por favor selecciona una opción valida")
+          
+      triqui4() 
+      break
+	 
+    else:
+        print("¡No se puede jugar así!")
+  triquiaho()
+
+
+#Codigo triqui para 1 persona
+import random 
+def iniciar_tablero():
+  
+    tablero = [] 
+    for i in range(3):
+          tablero.append(["-","-","-"])
+    return tablero
+
+def random_jugador():
+    if random.randint(0,1) == 1 :
+        return "Jugador"
+    else :
+        return "Maquina"
+        
+def seleccionar_simbolo_jugador():
+  nombre0=(input("Juegas contra la maquina, ingresa tu nombre: \n"))
+
+  while True:
+    xoo=(input("¿Quieres ser X o O?: \n" ))
+    if xoo=="X":
+      print(str(nombre0)+ " eres X.")
+      break
+    elif xoo=="O":
+      print(str(nombre0)+ " eres O.")
+      break
+    else:
+      print("Por favor selecciona una opción valida")
+
+  if xoo == "X" or xoo == "x" :
+      return "X" , "O"
+  else:
+      return "O" , "X"
+
+def imprimir_tablero(tablero):
+    for i in tablero:
+        print(*i)
+        
+def se_puede_jugar(tablero):
+    for fila in tablero:
+        for columna in fila:
+            if columna == "-":
+                return True
+    return False
+
+            
+def hay_ganador(t , jugador , maquina):
+    ## filas completas    
+    if (t[0][0] == t[0][1] and t[0][1] == t[0][2] and t[0][0] != "-" ) or (t[1][0] == t[1][1] and t[1][1] == t[1][2] and t[1][0] != "-") or(t[2][0] == t[2][1] and t[2][1] == t[2][2] and t[2][0] != "-" ):
+        return True
+    ## columna completa    
+    elif (t[0][0] == t[1][0] and t[1][0] == t[2][0] and t[0][0] != "-" ) or (t[0][1] == t[1][1] and t[1][1] == t[2][1] and t[0][1] != "-" )  or (t[0][2] == t[1][2] and t[1][2] == t[2][2] and t[0][2] != "-" ):
+        return True
+    ## diagonales completas
+    elif (t[0][0] == t[1][1] and t[1][1] == t[2][2] and t[0][0] != "-" ) or (t[0][2] == t[1][1] and t[1][1] == t[2][0] and t[0][2] != "-" ) :
+        return True
+    else:
+        return False
+def ubicar(entrada , tablero , simbolo):
+    cont = 0 ; 
+    for i in range(3):
+        for j in range(3):
+            cont += 1;
+            if cont == entrada:
+                tablero[i][j] = simbolo
+
+    return tablero
+                
+        
+def jugar_turno_jugador(tablero , disponibles , simbolo):
+    valid = True
+    while valid:
+        print(*disponibles)
+        entrada = int(input("Ingresa el número de la casilla que deseas ocupar : "))
+        if entrada in disponibles:
+            valid = False
+            tablero = ubicar(entrada , tablero , simbolo)
+            disponibles.remove(entrada)
+        else:
+            print("No es posible, intenta de nuevo.")
+    return tablero , disponibles
+
+def jugar_turno_maquina(tablero , disponibles , simbolo ):
+    entrada = disponibles[random.randint(0, len(disponibles) -1 )]
+    tablero = ubicar(entrada , tablero , simbolo) 
+    disponibles.remove(entrada)
+
+    return tablero , disponibles
+
+    
+def triqui3():
+    tablero = iniciar_tablero()
+    disponibles =[1,2,3,4,5,6,7,8,9]
+    jugador_actual = random_jugador()
+    simbolo_jugador, simbolo_maquina = seleccionar_simbolo_jugador()
+    juego_activo = True
+    print("Inicia: " , jugador_actual) 
+    while juego_activo:
+        
+        if jugador_actual == "Jugador":
+            tablero , disponibles = jugar_turno_jugador(tablero , disponibles , simbolo_jugador)
+        else:
+            tablero , disponibles = jugar_turno_maquina(tablero , disponibles  , simbolo_maquina)
+                      
+        if hay_ganador(tablero , simbolo_maquina , simbolo_jugador):
+          if jugador_actual== "Jugador":
+            print("El ganador es:", jugador_actual, "¡Puedes continuar al ahorcado!")
+            print("")
+            print("                   ¡INICIA EL AHORCADO!") 
+            ahorcado()
+            import random
+            import json
+
+            def game():
+              puntaje = random.randint(1, 30)  
+              return puntaje
+       
+          print ("BIENVENIDO AL JUEGO")
+          SCORE = game()
+
+          nombre = input("Por favor ingresa un alias: ")
+
+          f = open("PLAYERS.json", "r")
+          Resumen = json.load(f)
+          Resumen[nombre] = SCORE
+
+          f = open ("PLAYERS.json", "w")
+          json.dump(Resumen, f)
+
+          
+          sort_sumary = sorted(Resumen.items(), key=lambda x: x[1],reverse=True)
+          contador = 0  
+          for i in sort_sumary:
+             if contador < 3:
+                print ( f"{i[0]} obtuvo un puntaje de {i[1]}") 
+                contador += 1
+          juego_activo = False
+            
+          if jugador_actual== "Maquina":
+            print("Gana la maquina, jugador no puedes continuar :c")
+
+        elif not se_puede_jugar(tablero):
+            juego_activo = False
+            print("No se pueden hacer más jugadas, es un... ¡Empate! ")
+
+        else:
+            if jugador_actual == "Jugador":
+                print("Se ocupa tu posicion sigue la Maquina." )
+                jugador_actual = "Maquina"
+            else:
+                jugador_actual = "Jugador"
+        imprimir_tablero(tablero)
+
+        if juego_activo: 
+            print()
+            print("-- CAMBIO DE TURNO --")
+            print()
+                
+
+
+
+from collections import deque
+turno = deque(["0", "X"])
+tablero = [
+		[" ", " ", " "],
+		[" ", " ", " "],
+		[" ", " ", " "],
+	]
+
+def ver_tablero():
+	 print("")
+	 for fila in tablero:		
+			print (fila)
+
+def actualizar_tablero(posicion, jugador):
+	 tablero[posicion[0]][posicion[1]] = jugador
+
+def siguiente_turno():
+	 turno.rotate()
+	 return turno[0]
+
+def proceso_posicion(posicion):
+	 fila, columna = posicion.split(",")
+	 return [int(fila)-1, int(columna)-1]
+
+def posicion_valida(posicion):
+	 if 0 <= posicion[0] <= 2 and 0 <= posicion[1] <= 2:
+		 if tablero[posicion[0]][posicion[1]] == " ":
+				return True
+	 return False
+
+def ha_ganado(j):
+		#compara las filas del tablero
+		if tablero[0] == [j,j,j] or tablero[1] == [j,j,j] or tablero[2] == [j,j,j]:
+			return True
+		#compara las columnas
+		elif tablero[0][0] == j and tablero[1][0] == j and tablero[2][0] == j:
+			return True
+		elif tablero[0][1] == j and tablero[1][1] == j and tablero[2][1] == j:
+			return True
+		elif tablero[0][2] == j and tablero[1][2] == j and tablero[2][2] == j:
+			return True
+		#compara las diagonales
+		elif tablero[0][0] == j and tablero[1][1] == j and tablero[2][2] == j:
+			return True
+		elif tablero[0][2] == j and tablero[1][1] == j and tablero[2][0] == j:
+			return True
+		return False
+
+def triqui4():
+	import os
+	ver_tablero()
+	jugador = siguiente_turno()
+	while True:
+			os.system("cls")
+			posicion = input("Turno de {}, elige una posicion (fila, columna) o escribe 'salir' para salir ".format(jugador))
+			if posicion == 'salir':
+				print ("Juego terminado, gracias por jugar a este reto final ;)")
+				break
+			try:
+				posicion_l = proceso_posicion (posicion)			
+			except:
+				print ("Error, posicion {} inválida. ".format(posicion))
+				continue
+			if posicion_valida(posicion_l):
+				actualizar_tablero(posicion_l, jugador)
+				ver_tablero()
+				if ha_ganado(jugador):
+					print("¡El jugador {} ha ganado! ¡Continua al ahorcado! :D".format(jugador))
+					print("")
+					print("                 ¡INICIA EL AHORCADO!") 
+					ahorcado()
+					import random
+					import json
+
+					def game():
+					    puntaje = random.randint(1, 30) 
+					    return puntaje
+        
+					print ("BIENVENIDO AL JUEGO")
+					SCORE = game()
+
+					nombre = input("Por favor ingresa un alias: ")
+
+					f = open("PLAYERS.json", "r")
+					Resumen = json.load(f)
+					Resumen[nombre] = SCORE
+
+					f = open ("PLAYERS.json", "w")
+					json.dump(Resumen, f)
+
+					sort_sumary = sorted(Resumen.items(), key=lambda x: x[1],reverse=True)
+					contador = 0  
+					for i in sort_sumary:
+					   if contador < 3:
+					      print ( f"{i[0]} obtuvo un puntaje de {i[1]}") 
+					      contador += 1
+          
+					break
+				jugador = siguiente_turno()
+			else:
+				print ("Posicion {} Inválida".format(posicion))
+
+
+
+eleccion()
