@@ -1,21 +1,179 @@
-def triqui2():
+def triquiahorcado():
+
+  print("______________________________________________________________") #Instrucciones de juego
+  print("\/\/\/\/\/\/\/\/\/\/ EL TRIQUI AHORCADO \/\/\/\/\/\/\/\/\/\/\/")
+  print("")
+  print("El juego consiste en jugar primero un partido de triqui, puede\nser contra la maquina o contra un amigo, si juegas solo y\nderrotas a la maquina puedes pasar al reto del ahorcado;\nsi juegas con un amigo el ganador del juego de triqui puede\npasar al reto del ahorcado.\nEn el ahorcado hay 10 posibles palabras de entre 5 y 7 letras\nrelacionadas a la programación para adivinar.")
+  print("")
+  print("                       ¡Diviertete!           ")
+  print("______________________________________________________________")
+  print("")
+
+  print("                    ¡INICIA EL TRIQUI!")
+  def triquiaho():
+    x=float(input("¿Cuantos jugadores?: \n"))
+    while True: #Si no ingresa opción valida de jugadores lo devuelve
+      if x==1: #Juega contra la maquina
+        triqui3() #Ejecuta el codigo del triqui para uno, cuando este acaba cierra el ciclo
+        break
+
+      elif x==2:#Juegan dos personas
+        nombre1=(input("Jugador 1, ingresa tu nombre: \n"))
+        nombre2=(input("Jugador 2, ingresa tu nombre: \n"))
+
+        while True:
+          xoo=(input("¿Quieres ser X o O?: \n" ))
+          if xoo=="X":
+            print(str(nombre2)+ " eres X, inicias.")
+            break
+          elif xoo=="O":
+            print("Eres O, inicia "+str(nombre1)+" que es X.")
+            break
+          else:
+            print("Por favor selecciona una opción valida")
+          
+      triqui4() #Ejecuta el codigo del triqui para dos, cuando este acaba cierra el ciclo
+      break
+	 
+    else:
+        print("¡No se puede jugar así!")
+  triquiaho()
+
+
+#Codigo triqui para 1 persona
+import random 
+def iniciar_tablero():
   
-    nombre1=(input("Jugador 1, ingresa tu nombre: \n"))
-    nombre2=(input("Jugador 2, ingresa tu nombre: \n"))
+    tablero = [] 
+    for i in range(3):
+          tablero.append(["-","-","-"])
+    return tablero
+
+def random_jugador():
+    if random.randint(0,1) == 1 :
+        return "Jugador"
+    else :
+        return "Maquina"
+        
+def seleccionar_simbolo_jugador():
+  nombre0=(input("Juegas contra la maquina, ingresa tu nombre: \n"))
+
+  while True:
+    xoo=(input("¿Quieres ser X o O?: \n" ))
+    if xoo=="X":
+      print(str(nombre0)+ " eres X.")
+      break
+    elif xoo=="O":
+      print(str(nombre0)+ " eres O.")
+      break
+    else:
+      print("Por favor selecciona una opción valida")
+
+  if xoo == "X" or xoo == "x" :
+      return "X" , "O"
+  else:
+      return "O" , "X"
+
+def imprimir_tablero(tablero):
+    for i in tablero:
+        print(*i)
+        
+def se_puede_jugar(tablero):
+    for fila in tablero:
+        for columna in fila:
+            if columna == "-":
+                return True
+    return False
+
+            
+def hay_ganador(t , jugador , maquina):
+    ## filas completas    
+    if (t[0][0] == t[0][1] and t[0][1] == t[0][2] and t[0][0] != "-" ) or (t[1][0] == t[1][1] and t[1][1] == t[1][2] and t[1][0] != "-") or(t[2][0] == t[2][1] and t[2][1] == t[2][2] and t[2][0] != "-" ):
+        return True
+    ## columna completa    
+    elif (t[0][0] == t[1][0] and t[1][0] == t[2][0] and t[0][0] != "-" ) or (t[0][1] == t[1][1] and t[1][1] == t[2][1] and t[0][1] != "-" )  or (t[0][2] == t[1][2] and t[1][2] == t[2][2] and t[0][2] != "-" ):
+        return True
+    ## diagonales completas
+    elif (t[0][0] == t[1][1] and t[1][1] == t[2][2] and t[0][0] != "-" ) or (t[0][2] == t[1][1] and t[1][1] == t[2][0] and t[0][2] != "-" ) :
+        return True
+    else:
+        return False
+def ubicar(entrada , tablero , simbolo):
+    cont = 0 ; 
+    for i in range(3):
+        for j in range(3):
+            cont += 1;
+            if cont == entrada:
+                tablero[i][j] = simbolo
+
+    return tablero
+                
+        
+def jugar_turno_jugador(tablero , disponibles , simbolo):
+    valid = True
+    while valid:
+        print(*disponibles)
+        entrada = int(input("Ingresa el número de la casilla que deseas ocupar : "))
+        if entrada in disponibles:
+            valid = False
+            tablero = ubicar(entrada , tablero , simbolo)
+            disponibles.remove(entrada)
+        else:
+            print("No es posible, intenta de nuevo.")
+    return tablero , disponibles
+
+def jugar_turno_maquina(tablero , disponibles , simbolo ):
+    entrada = disponibles[random.randint(0, len(disponibles) -1 )]
+    tablero = ubicar(entrada , tablero , simbolo) 
+    disponibles.remove(entrada)
+
+    return tablero , disponibles
+
     
-    while True:
-      xoo=(input("¿Jugador 2, quieres ser X o O?: \n" ))
-    
-      if xoo=="X":
-        print(str(nombre2)+ " eres X, inicias.")
-        break
-      elif xoo=="O":
-        print("Eres O, inicia "+str(nombre1)+" que es X.")
-        break
-      else:
-        print("Por favor selecciona una opción valida")
-    juego2()
-  			 
+def triqui3():
+    tablero = iniciar_tablero()
+    disponibles =[1,2,3,4,5,6,7,8,9]
+    jugador_actual = random_jugador()
+    simbolo_jugador, simbolo_maquina = seleccionar_simbolo_jugador()
+    juego_activo = True
+    print("Inicia: " , jugador_actual) #METER EL NOMBRE
+    while juego_activo:
+        
+        if jugador_actual == "Jugador":
+            tablero , disponibles = jugar_turno_jugador(tablero , disponibles , simbolo_jugador)
+        else:
+            tablero , disponibles = jugar_turno_maquina(tablero , disponibles  , simbolo_maquina)
+            
+        if not se_puede_jugar(tablero):
+            juego_activo = False
+            print("No se pueden hacer más jugadas, es un... ¡Empate! ")
+            
+        elif hay_ganador(tablero , simbolo_maquina , simbolo_jugador):
+          if jugador_actual== "Jugador":
+            print("El ganador es:", jugador_actual, "¡Puedes continuar al ahorcado!")
+            print("")
+            print("                   ¡INICIA EL AHORCADO!") 
+            ahorcado()
+            juego_activo = False
+            
+          if jugador_actual== "Maquina":
+            print("Gana la maquina, jugador no puedes continuar :c")
+        else:
+            if jugador_actual == "Jugador":
+                print("Se ocupa tu posicion sigue la Maquina." )
+                jugador_actual = "Maquina"
+            else:
+                jugador_actual = "Jugador"
+        imprimir_tablero(tablero) #ERROR IMPRIME AL FINAL!!!
+
+        if juego_activo: 
+            print()
+            print("-- CAMBIO DE TURNO --")
+            print()
+                
+
+
+#Codigo del triqui para dos personas 
 from collections import deque
 turno = deque(["0", "X"])
 tablero = [
@@ -64,7 +222,7 @@ def ha_ganado(j):
 			return True
 		return False
 
-def juego2():
+def triqui4():
 	import os
 	ver_tablero()
 	jugador = siguiente_turno()
@@ -83,48 +241,12 @@ def juego2():
 				actualizar_tablero(posicion_l, jugador)
 				ver_tablero()
 				if ha_ganado(jugador):
-					print ("El jugador {} ha ganado!!! gracias por jugar a este reto final ;)".format(jugador))
+					print("¡El jugador {} ha ganado! ¡Continua al ahorcado! :D".format(jugador))
+					print("")
+					print("                 ¡INICIA EL AHORCADO!") 
+					ahorcado()
+          
 					break
 				jugador = siguiente_turno()
 			else:
 				print ("Posicion {} Inválida".format(posicion))
-triqui2()
-		
-
-y=int(input("¿Cuantos juegos de triqui desean jugar? \nRecuerda, debe ser un número impar: \n"))
-
-def triquiahorcado():
-  print("______________________________________________________________")
-  print("\/\/\/\/\/\/\/\/\/\/ EL TRIQUI AHORCADO \/\/\/\/\/\/\/\/\/\/\/")
-  print("")
-  print("El juego consiste en jugar triqui el numero impar de veces que\nse desee, puede ser contra la maquina o contra un amigo, si\njuegas solo y derrotas la mayoría de veces a la maquina puedes\npasar al reto de ahorcado, si juegas con un amigo el ganador de\nla mayoria de juegos de triqui puede pasar al reto del ahorcado.\nEn el ahorcado hay 10 posibles palabras de entre 5 y 7 letras\nrelacionadas a la programación para adivinar.")
-  print("")
-  print("                       ¡Diviertete!           ")
-  print("______________________________________________________________")
-  print("")
-  
-  x=float(input("¿Cuantos jugadores?: \n"))
-
-  if x==1:
-    nombre0=(input("Juegas contra la maquina, ingresa tu nombre: \n"))
-    while True:
-      xoo=(input("¿Quieres ser X o O?: \n" ))
-    
-      if xoo=="X":
-        print(str(nombre0)+ " eres X, inicias.")
-        break
-      elif xoo=="O":
-        print(str(nombre0)+ ", inicia la maquina.")
-        break
-      else:
-        print("Por favor selecciona una opción valida")
-        
-
-  elif x==2:
-    triqui2()
-	 
-  else:
-      print("¡No se puede jugar así!")
-
-for i in range(y):
-  triquiahorcado()
