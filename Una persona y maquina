@@ -1,0 +1,107 @@
+import random 
+def iniciar_tablero():
+    tablero = [] 
+    for i in range(3):
+          tablero.append(["-","-","-"])
+    return tablero
+def random_jugador():
+    if random.randint(0,1) == 1 :
+        return "jugador"
+    else :
+        return "maquina"
+def seleccionar_simbolo_jugador():
+    simbolo = input("ingrese el simbolo con el que desea jugar X ó O")
+    if simbolo == "X" or simbolo == "x" :
+        return "X" , "O"
+    else:
+        return "O" , "X"
+def imprimir_tablero(tablero):
+    for i in tablero:
+        print(*i)
+        
+def se_puede_jugar(tablero):
+    for fila in tablero:
+        for columna in fila:
+            if columna == "-":
+                return True
+    return False
+
+            
+def hay_ganador(t , jugador , maquina):
+    ## filas completas    
+    if (t[0][0] == t[0][1] and t[0][1] == t[0][2] and t[0][0] != "-" ) or (t[1][0] == t[1][1] and t[1][1] == t[1][2] and t[1][0] != "-") or(t[2][0] == t[2][1] and t[2][1] == t[2][2] and t[2][0] != "-" ):
+        return True
+    ## columna completa    
+    elif (t[0][0] == t[1][0] and t[1][0] == t[2][0] and t[0][0] != "-" ) or (t[0][1] == t[1][1] and t[1][1] == t[2][1] and t[0][1] != "-" )  or (t[0][2] == t[1][2] and t[1][2] == t[2][2] and t[0][2] != "-" ):
+        return True
+    ## diagonales completas
+    elif (t[0][0] == t[1][1] and t[1][1] == t[2][2] and t[0][0] != "-" ) or (t[0][2] == t[1][1] and t[1][1] == t[2][0] and t[0][2] != "-" ) :
+        return True
+    else:
+        return False
+def ubicar(entrada , tablero , simbolo):
+    cont = 0 ; 
+    for i in range(3):
+        for j in range(3):
+            cont += 1;
+            if cont == entrada:
+                tablero[i][j] = simbolo
+
+    return tablero
+                
+        
+def jugar_turno_jugador(tablero , disponibles , simbolo):
+    valid = True
+    while valid:
+        print(*disponibles)
+        entrada = int(input("ingrese uno de los numeros de la lista"))
+        if entrada in disponibles:
+            valid = False
+            tablero = ubicar(entrada , tablero , simbolo)
+            disponibles.remove(entrada)
+        else:
+            print("numero erroneo ingrese otro")
+    return tablero , disponibles
+
+def jugar_turno_maquina(tablero , disponibles , simbolo ):
+    entrada = disponibles[random.randint(0, len(disponibles) -1 )]
+    tablero = ubicar(entrada , tablero , simbolo) 
+    disponibles.remove(entrada)
+
+    return tablero , disponibles
+
+    
+def main():
+    tablero = iniciar_tablero()
+    disponibles =[1,2,3,4,5,6,7,8,9]
+    jugador_actual = random_jugador()
+    simbolo_jugador, simbolo_maquina = seleccionar_simbolo_jugador()
+    juego_activo = True
+    print("Bienvenido")
+    print("inicia el/la " , jugador_actual)
+    while juego_activo:
+        
+        if jugador_actual == "jugador":
+            tablero , disponibles = jugar_turno_jugador(tablero , disponibles , simbolo_jugador)
+        else:
+            tablero , disponibles = jugar_turno_maquina(tablero , disponibles  , simbolo_maquina)
+            
+        if not se_puede_jugar(tablero):
+            juego_activo = False
+            print("no se pueden hacer mas jugadas , empate ")
+        elif hay_ganador(tablero , simbolo_maquina , simbolo_jugador):
+            print("el ganador es : " , jugador_actual)
+            juego_activo = False
+        else:
+            if jugador_actual == "jugador":
+                print("entra " )
+                jugador_actual = "maquina"
+            else:
+                jugador_actual = "jugador"
+        imprimir_tablero(tablero)
+        if juego_activo: 
+            print()
+            print("-- CAMBIO DE TURNO --")
+            print()
+                
+main() 
