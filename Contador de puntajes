@@ -1,0 +1,19 @@
+import random
+      import json
+
+      def game():
+        puntaje = random.randint(1, 30) #definir el puntaje min y max 
+        return puntaje
+
+
+      print ("BIENVENIDO AL JUEGO")
+      SCORE = game()
+      nombre = input("Por favor ingresa un alias: ")
+
+      f = open("PLAYERS.json", "r")
+      Resumen = json.load(f)
+      Resumen[nombre] = SCORE
+
+
+      f = open ("PLAYERS.json", "w")
+      json.dump(Resumen, f)
